@@ -1,0 +1,65 @@
+<%- include(header) %>
+<div class="padding-content">
+    <div class="container">
+        <div id="chat">
+            <!--<div class="container" id="list" v-for="list in listMessage">-->
+            <!--<h4>{{list.message}}</h4>-->
+            <!--</div>-->
+            <div id="">
+                <ul id="messages"></ul>
+            </div>
+            <div class="" v-if="write">
+                <img :src="imgTyping"/>
+            </div>
+            <div class="col-md-12 col-xs-12">
+                <% include ../includes/sendbox %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include(footer) %>
+
+<script>
+    new Vue({
+        el: '#chat',
+        data: {
+            listMessage: [],
+            message: '',
+            write: false,
+            imgTyping: '/images/typing.gif'
+        },
+        mounted() {
+            var _this = this;
+            socket.on('server event', function (data) {
+                console.log(data);
+                $('#messages').append($('<li>').text(data.message));
+                _this.write = false;
+                _this.message = '';
+            });
+
+            socket.on('typing status', function (status) {
+                _this.write = status;
+            });
+        },
+        methods: {
+            sendMessage: function(e) {
+                e.preventDefault();
+                var _this = this;
+                var msg = { message: this.message};
+                socket.emit('client event', msg);
+            },
+            typing: function() {
+                this.write = true;
+                socket.emit('typing event', this.write);
+            },
+            inFocus: function() {
+                this.write = true;
+                socket.emit('typing event', this.write);
+            },
+            outFocus: function() {
+                this.write = false;
+                socket.emit('typing event', this.write);
+            }
+        }
+    });
+</script>

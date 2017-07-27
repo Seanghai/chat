@@ -1,0 +1,15 @@
+<nav class="container navbar navbar-default navbar-fixed-bottom nav-send-box nopadding">
+    <div class="">
+        <form v-on:submit="sendMessage">
+            <div class="form-group col-sm-11 col-xs-9 send-group">
+                <input type="text" class="form-control text-box" v-model="message" v-on:focus="inFocus" v-on:keyup="typing" v-on:blur="outFocus" />
+            </div>
+            <div class="form-group col-sm-1 col-xs-3 send-group">
+                <button class="btn btn-primary btn-send pull-right">
+                    <i class="glyphicon glyphicon-send"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- /.container-fluid -->
+</nav>

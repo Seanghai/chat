@@ -1,0 +1,49 @@
+<%- include(header) %>
+<div class="padding-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="/register" method="POST">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="full_name" placeholder="Full Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="tnc" checked="checked"> <a href="#">Term & Condition</a>
+                                    <input type="hidden" id="term_condition" name="term_condition" value="true">
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include(footer) %>
+
+<script>
+    $(document).ready(function() {
+        $('#tnc').on('click', function(){
+            if ( $(this).is(':checked') )
+                $('#term_condition').val(true);
+            else
+                $('#term_condition').val(false);
+        });
+    });
+</script>
