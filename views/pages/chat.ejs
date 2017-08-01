@@ -6,7 +6,7 @@
             <!--<h4>{{list.message}}</h4>-->
             <!--</div>-->
             <div id="">
-                <ul id="messages"></ul>
+                <div id="messages"></div>
             </div>
             <div class="" v-if="write">
                 <img :src="imgTyping"/>
@@ -23,6 +23,8 @@
     new Vue({
         el: '#chat',
         data: {
+            receiver: '<%= friendId %>',
+            sender: '<%= sender %>',
             listMessage: [],
             message: '',
             write: false,
@@ -30,35 +32,49 @@
         },
         mounted() {
             var _this = this;
-            socket.on('server event', function (data) {
+            socket.on('server event ' + this.sender, function (data) {
                 console.log(data);
-                $('#messages').append($('<li>').text(data.message));
+                $('#messages').append($('<div class="text-chat">').text(data.message));
                 _this.write = false;
                 _this.message = '';
             });
 
-            socket.on('typing status', function (status) {
-                _this.write = status;
+            socket.on('typing status ' + this.sender, function (typing) {
+                _this.write = typing.status;
             });
         },
         methods: {
             sendMessage: function(e) {
                 e.preventDefault();
                 var _this = this;
-                var msg = { message: this.message};
-                socket.emit('client event', msg);
+                var clientData = {
+                    message: this.message,
+                    receiver: this.receiver,
+                    sender: this.sender
+                };
+                socket.emit('client event', clientData);
+                this.message = '';
             },
             typing: function() {
-                this.write = true;
-                socket.emit('typing event', this.write);
+                var typing = {
+                    status: true,
+                    receiver: this.receiver
+                };
+                socket.emit('typing event', typing);
             },
-            inFocus: function() {
-                this.write = true;
-                socket.emit('typing event', this.write);
-            },
+//            inFocus: function() {
+//                var typing = {
+//                    status: true,
+//                    receiver: this.receiver
+//                };
+//                socket.emit('typing event', typing);
+//            },
             outFocus: function() {
-                this.write = false;
-                socket.emit('typing event', this.write);
+                var typing = {
+                    status: false,
+                    receiver: this.receiver
+                };
+                socket.emit('typing event', typing);
             }
         }
     });

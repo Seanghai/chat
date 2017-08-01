@@ -4,6 +4,7 @@ const FrontendController = require('../controllers/FrontendController');
 const Authentication = require('../controllers/Authentication');
 
 router.get('/', FrontendController.index);
+router.get('/chat/:userId', FrontendController.chat);
 router.get('/profile', FrontendController.profile);
 router.get('/login', FrontendController.login);
 router.get('/register', FrontendController.register);

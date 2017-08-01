@@ -1,0 +1,10 @@
+<%- include(header) %>
+<div class="padding-content">
+    <div class="container">
+        <% friends.forEach(function(fid) { %>
+        <a href="/chat/<%= fid.id %>"><%= fid.id %></a>
+        <% }); %>
+    </div>
+</div>
+<%- include(footer) %>
+
