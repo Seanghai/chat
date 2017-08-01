@@ -1,9 +1,6 @@
 const Authentication = module.exports;
 const UserModel = require('../models/UserModel');
 
-const LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
-
 /**
  *
  * @param req
@@ -40,7 +37,8 @@ Authentication.register = function(req, res) {
                         console.log('Error: ', err);
                         return res.status(500).send();
                     } else {
-                        localStorage.setItem('user', JSON.stringify(user));
+                        req.session.userId = id;
+                        req.session.user = user;
                         res.redirect('/');
                     }
                 });
@@ -83,8 +81,8 @@ Authentication.login = function(req, res) {
                         console.log('Error: ', err);
                         return res.status(500).send();
                     } else {
-                        req.session.userid = id;
-                        localStorage.setItem('user', JSON.stringify(user));
+                        req.session.userId = id;
+                        req.session.user = account;
                         res.redirect('/');
                     }
                 });
@@ -99,8 +97,7 @@ Authentication.login = function(req, res) {
  * @param res
  */
 Authentication.logout = function(req, res) {
-    var account = localStorage.getItem('user');
-    var user = JSON.parse(account);
+    var user = req.session.user;
         var newData = {
             is_login: false,
             is_active: false
@@ -110,7 +107,6 @@ Authentication.logout = function(req, res) {
             console.log('Error: ', err);
             return res.status(500).send();
         } else {
-            localStorage.removeItem('user');
             req.session.destroy();
             res.redirect('/');
         }

@@ -18,13 +18,15 @@ server.listen(3003);
 
 app.set('trust proxy', 1); // trust first proxy
 app.use(session({
-    secret: 'keyboard cat',
+    secret: 'expresso',
     resave: true,
     saveUninitialized: false,
     cookie: {
-        secure: true
+        // secure: true, // if we use https, secure will true
+        maxAge: (365 * 24 * 60 * 60 * 1000)
     }
 }));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
