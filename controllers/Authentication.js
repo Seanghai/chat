@@ -53,7 +53,7 @@ Authentication.register = function(req, res) {
  * @param res
  */
 Authentication.login = function(req, res) {
-    // res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json');
     var account = {
         email: req.body.email,
         password: req.body.password
