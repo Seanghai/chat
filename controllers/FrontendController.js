@@ -2,6 +2,7 @@ const FrontendController = module.exports;
 const Authentication = require('./Authentication');
 const FriendModel = require('../models/FriendModel');
 const UserModel = require('../models/UserModel');
+const MessageModel = require('../models/MessageModel');
 const data = {
     app_name: 'Chat',
     header: '../includes/header',
@@ -51,6 +52,7 @@ FrontendController.index = function(req, res) {
                             friendId.push({id: friend.user_id_one});
                         }
                     });
+
                     data.friends = friendId;
                     data.header = '../includes/headerAuthentication';
                     res.render('pages/friend', data);
@@ -111,16 +113,31 @@ FrontendController.chat = function(req, res) {
     }
 
     var condition = { _id : req.params.userId };
+    var userId = req.params.userId;
 
     UserModel.findOne(condition, function (err, friend) {
         if (err) {
             throw err;
         } else {
-            data.sender = req.session.userId;
-            data.friendId = friend._id;
-            data.header = '../includes/headerAuthentication';
-            data.uri = req.originalUrl;
-            res.render('pages/chat', data);
+            var cond = {
+                $and : [
+                    { $or : [ { sender : userId }, { receiver : userId } ] },
+                    { $or : [ { status : 0 } ] }
+                ]
+            };
+            // get all message
+            MessageModel.list(cond, function (err, msgs) {
+                if (err) {
+                    throw err;
+                } else {
+                    data.messageList = msgs;
+                    data.sender = req.session.userId;
+                    data.friendId = friend._id;
+                    data.header = '../includes/headerAuthentication';
+                    data.uri = req.originalUrl;
+                    res.render('pages/chat', data);
+                }
+            });
         }
     });
 };

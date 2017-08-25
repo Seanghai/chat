@@ -5,6 +5,17 @@
             <!--<div class="container" id="list" v-for="list in listMessage">-->
             <!--<h4>{{list.message}}</h4>-->
             <!--</div>-->
+            <% messageList.forEach(function(msg) { %>
+                <div>
+                    <div class="col-sm-12 col-xs-12">
+                        <% if (msg.sender == sender) { %>
+                            <div class="pull-right text-chat-sender"><%= msg.message %></div>
+                        <% } else { %>
+                            <div class="pull-left text-chat-receiver"><%= msg.message %></div>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
             <div id="">
                 <div id="messages"></div>
             </div>
@@ -33,8 +44,8 @@
         mounted() {
             var _this = this;
             socket.on('server event ' + this.sender, function (data) {
-                console.log(data);
-                $('#messages').append($('<div class="text-chat">').text(data.message));
+                console.log(socket.id);
+                $('#messages').append('<div class="col-sm-12 col-xs-12"><div class="pull-left text-chat-receiver">' + data.message + '</div></div>');
                 _this.write = false;
                 _this.message = '';
             });
@@ -53,6 +64,7 @@
                     sender: this.sender
                 };
                 socket.emit('client event', clientData);
+                $('#messages').append('<div class="col-sm-12 col-xs-12"><div class="pull-right text-chat-sender">' + this.message + '</div></div>');
                 this.message = '';
             },
             typing: function() {
