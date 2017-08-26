@@ -113,11 +113,20 @@ body {
   box-shadow: none;
 }
 
-.text-chat {
-  background: #1278c8;
-  color: #fff;
+.text-chat-receiver {
+  background: #ffffff;
+  color: #777;
   border-radius: 10px 10px 10px 0;
   padding: 8px;
+  width: 200px;
   margin-bottom: 5px;
 }
 
+.text-chat-sender {
+  background: #1278c8;
+  color: #fff;
+  border-radius: 10px 10px 0 10px;
+  padding: 8px;
+  width: 200px;
+  margin-bottom: 5px;
+}

@@ -1,8 +1,12 @@
 <%- include(header) %>
 <div class="padding-content">
     <div class="container">
-        <% friends.forEach(function(fid) { %>
-        <a href="/chat/<%= fid.id %>"><%= fid.id %></a>
+        <% friends.forEach(function(fri) { %>
+        <div class="col-md-2 col-sm-3 col-xs-6">
+            <a class="col-md-12 col-sm-12 col-xs-12" href="/chat/<%= fri._id %>">
+                <%= fri.full_name %>
+            </a>
+        </div>
         <% }); %>
     </div>
 </div>

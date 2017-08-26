@@ -108,3 +108,7 @@ module.exports.isActive = function(user, callback) {
     var option = 'is_active';
     User.findOne(query, option, callback);
 };
+
+module.exports.getUsers = function(condition, callback) {
+    User.find(condition, callback);
+};
