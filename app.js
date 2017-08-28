@@ -6,14 +6,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const router = require('./routes/router');
+// const router = require('./routes/router');
 
 require('./config/database');
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io')(server);
-const SocketIO = require('./controllers/SocketIO')(io);
+// const io = require('socket.io')(server);
+// const SocketIO = require('./controllers/SocketIO')(io);
 server.listen(3003);
 
 app.set('trust proxy', 1); // trust first proxy
@@ -35,7 +35,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(router);
+// app.use(router);
+
+app.route('/', function(req, res){res.send('Hello');});
 
 
 // catch 404 and forward to error handler
